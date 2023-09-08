@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("STUN_Client_app")]
+[assembly: AssemblyTitle("Warcraft II Port Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("STUN_Client_app")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2007")]
+[assembly: AssemblyProduct("Warcraft II Port Test")]
+[assembly: AssemblyCopyright("Copyright © 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

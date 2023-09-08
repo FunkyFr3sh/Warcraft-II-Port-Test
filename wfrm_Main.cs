@@ -4,10 +4,13 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Net;
+using System.Linq;
 using System.Net.Sockets;
 
 using LumiSoft.Net.STUN.Client;
 using Microsoft.Win32;
+using System.Security.Cryptography;
+using System.Collections;
 
 namespace Warcraft_II_Port_Test
 {
@@ -164,7 +167,8 @@ namespace Warcraft_II_Port_Test
                     STUN_Result result = STUN_Client.Query(m_pServer.Text,3478,socket);
                     m_pNetType.Text = result.NetType.ToString();
                     if(result.NetType != STUN_NetType.UdpBlocked){
-                        m_pPublicEndPoint.Text = result.PublicEndPoints[0].ToString();
+                        m_pPublicEndPoint.Text = 
+                            string.Join(" ", result.PublicEndPoints.Select(t => t.ToString()).ToArray());
                     }
                     else{
                         m_pPublicEndPoint.Text = "";
