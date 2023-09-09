@@ -46,7 +46,7 @@ namespace Warcraft_II_Port_Test
         /// </summary>
         private void InitUI()
         {
-            this.ClientSize = new Size(380,155);
+            this.ClientSize = new Size(380,175);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.Text = "Warcraft II Port Test";
@@ -106,22 +106,23 @@ namespace Warcraft_II_Port_Test
             mt_PublicEndPoint.Size = new Size(100,20);
             mt_PublicEndPoint.Location = new Point(0,85);
             mt_PublicEndPoint.TextAlign = ContentAlignment.MiddleRight;
-            mt_PublicEndPoint.Text = "Public end point:";
+            mt_PublicEndPoint.Text = "Public end points:";
 
             m_pPublicEndPoint = new TextBox();
-            m_pPublicEndPoint.Size = new Size(265,20);
+            m_pPublicEndPoint.Size = new Size(265,40);
             m_pPublicEndPoint.Location = new Point(105,85);
             m_pPublicEndPoint.ReadOnly = true;
+            m_pPublicEndPoint.Multiline = true;
 
             m_pGet = new Button();
             m_pGet.Size = new Size(70,20);
-            m_pGet.Location = new Point(220,120);
+            m_pGet.Location = new Point(220,140);
             m_pGet.Text = "Get";
             m_pGet.Click += new EventHandler(m_pGet_Click);
 
             m_pClose = new Button();
             m_pClose.Size = new Size(70,20);
-            m_pClose.Location = new Point(300,120);
+            m_pClose.Location = new Point(300,140);
             m_pClose.Text = "Close";
             m_pClose.Click += new EventHandler(m_pClose_Click);
 
@@ -168,7 +169,7 @@ namespace Warcraft_II_Port_Test
                     m_pNetType.Text = result.NetType.ToString();
                     if(result.NetType != STUN_NetType.UdpBlocked){
                         m_pPublicEndPoint.Text = 
-                            string.Join(" ", result.PublicEndPoints.Select(t => t.ToString()).ToArray());
+                            string.Join(" - ", result.PublicEndPoints.Select(t => t.ToString()).ToArray());
                     }
                     else{
                         m_pPublicEndPoint.Text = "";
