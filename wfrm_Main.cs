@@ -20,10 +20,9 @@ namespace Warcraft_II_Port_Test
     public class wfrm_Main : Form
     {
         private Label         mt_Server         = null;
-        private TextBox       m_pServer         = null;        
+        private ComboBox      m_pServer         = null;        
         private Label         mt_LocalEndPoint  = null;
         private TextBox       m_pLocalEndPoint  = null;
-        private NumericUpDown m_pPort           = null;
         private Label         mt_NetType        = null;
         private TextBox       m_pNetType        = null;
         private Label         mt_PublicEndPoint = null;
@@ -57,17 +56,12 @@ namespace Warcraft_II_Port_Test
             mt_Server.TextAlign = ContentAlignment.MiddleRight;
             mt_Server.Text = "STUN server:";
 
-            m_pServer = new TextBox();
-            m_pServer.Size = new Size(200,20);
+            m_pServer = new ComboBox();
+            m_pServer.Size = new Size(265, 20);
             m_pServer.Location = new Point(105,10);
-            m_pServer.Text = "stun.1und1.de";
-
-            m_pPort = new NumericUpDown();
-            m_pPort.Size = new Size(60,20);
-            m_pPort.Location = new Point(310,10);
-            m_pPort.Minimum = 1;
-            m_pPort.Maximum = 99999;
-            m_pPort.Value = 3478;
+            m_pServer.Items.Add("stun.1und1.de:3478");
+            m_pServer.Items.Add("stun.gmx.net:3478");
+            m_pServer.SelectedIndex = 0;
 
             mt_LocalEndPoint = new Label();
             mt_LocalEndPoint.Size = new Size(100,20);
@@ -127,7 +121,6 @@ namespace Warcraft_II_Port_Test
             m_pClose.Click += new EventHandler(m_pClose_Click);
 
             this.Controls.Add(mt_Server);
-            this.Controls.Add(m_pPort);
             this.Controls.Add(m_pServer);
             this.Controls.Add(mt_NetType);
             this.Controls.Add(m_pNetType);
@@ -165,19 +158,44 @@ namespace Warcraft_II_Port_Test
                     }
                     m_pLocalEndPoint.Text = socket.LocalEndPoint.ToString();
 
-                    STUN_Result result = STUN_Client.Query(m_pServer.Text,3478,socket);
+                    string server = m_pServer.Text.Split(':')[0];
+                    int port = 3478;
+
+                    try { port = Convert.ToInt32(m_pServer.Text.Split(':')[1]); }
+                    catch { }
+
+                    STUN_Result result = STUN_Client.Query(server, port, socket);
                     m_pNetType.Text = result.NetType.ToString();
                     if(result.NetType != STUN_NetType.UdpBlocked){
                         m_pPublicEndPoint.Text = 
                             string.Join(" - ", result.PublicEndPoints.Select(t => t.ToString()).ToArray());
                     }
                     else{
+                        if (m_pServer.SelectedIndex != 1) 
+                        {
+                            m_pServer.SelectedIndex = 1;
+                            m_pGet.PerformClick();
+                        }
+
                         m_pPublicEndPoint.Text = "";
                     }
                 }
             }
             catch(Exception x){
-                MessageBox.Show(this,"Error: " + x.ToString(),"Error:",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                if (m_pServer.SelectedIndex != 1)
+                {
+                    m_pServer.SelectedIndex = 1;
+                    m_pGet.PerformClick();
+                }
+                else
+                {
+                    MessageBox.Show(
+                        this, 
+                        "Error: " + x.ToString(), 
+                        "Error:", 
+                        MessageBoxButtons.OK, 
+                        MessageBoxIcon.Error);
+                }  
             }
             finally{
                 this.Cursor = Cursors.Default;
