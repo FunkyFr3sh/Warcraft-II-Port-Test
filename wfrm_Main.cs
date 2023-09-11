@@ -133,6 +133,8 @@ namespace Warcraft_II_Port_Test
         private void m_pGet_Click(object sender,EventArgs e)
         {
             m_pLocalEndPoint.Text = new IPEndPoint(IPAddress.Any, 0).ToString();
+            m_pNetType.Text = "";
+            m_pPublicEndPoint.Text = "";
 
             this.Cursor = Cursors.WaitCursor;
             try{
@@ -164,13 +166,13 @@ namespace Warcraft_II_Port_Test
                             string.Join(" - ", result.PublicEndPoints.Select(t => t.ToString()).ToArray());
                     }
                     else{
+                        m_pPublicEndPoint.Text = "";
+
                         if (m_pServer.SelectedIndex != 1) 
                         {
                             m_pServer.SelectedIndex = 1;
                             m_pGet.PerformClick();
                         }
-
-                        m_pPublicEndPoint.Text = "";
                     }
                 }
             }
