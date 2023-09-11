@@ -49,6 +49,7 @@ namespace Warcraft_II_Port_Test
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.Text = "Warcraft II Port Test";
+            this.MaximizeBox = false;
 
             mt_Server = new Label();
             mt_Server.Size = new Size(100,20);
@@ -59,8 +60,8 @@ namespace Warcraft_II_Port_Test
             m_pServer = new ComboBox();
             m_pServer.Size = new Size(265, 20);
             m_pServer.Location = new Point(105,10);
-            m_pServer.Items.Add("stun.1und1.de:3478");
-            m_pServer.Items.Add("stun.gmx.net:3478");
+            m_pServer.Items.Add("stun.t-online.de:3478");
+            m_pServer.Items.Add("stun.voipstunt.com:3478");
             m_pServer.SelectedIndex = 0;
 
             mt_LocalEndPoint = new Label();
@@ -69,21 +70,11 @@ namespace Warcraft_II_Port_Test
             mt_LocalEndPoint.TextAlign = ContentAlignment.MiddleRight;
             mt_LocalEndPoint.Text = "Local end point:";
 
-            int port = 6112;
-
-            try 
-            { 
-                port = (int)Registry.GetValue(
-                    "HKEY_CURRENT_USER\\SOFTWARE\\Battle.net\\Configuration", 
-                    "Game Data Port", 
-                    "6112"); 
-            }
-            catch {  }
-
             m_pLocalEndPoint = new TextBox();
             m_pLocalEndPoint.Size = new Size(265,20);
             m_pLocalEndPoint.Location = new Point(105,35);
-            m_pLocalEndPoint.Text = new IPEndPoint(IPAddress.Any, port).ToString();
+            m_pLocalEndPoint.Text = new IPEndPoint(IPAddress.Any, 0).ToString();
+            m_pLocalEndPoint.ReadOnly = true;
 
             mt_NetType = new Label();
             mt_NetType.Size = new Size(100,20);
@@ -141,6 +132,8 @@ namespace Warcraft_II_Port_Test
 
         private void m_pGet_Click(object sender,EventArgs e)
         {
+            m_pLocalEndPoint.Text = new IPEndPoint(IPAddress.Any, 0).ToString();
+
             this.Cursor = Cursors.WaitCursor;
             try{
                 if(string.IsNullOrEmpty(m_pServer.Text)){
