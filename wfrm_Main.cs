@@ -142,9 +142,6 @@ namespace Warcraft_II_Port_Test
 
         private void m_pGet_Click(object sender,EventArgs e)
         {
-            if (GamePort == 0)
-                m_pLocalEndPoint.Text = new IPEndPoint(IPAddress.Any, 0).ToString();
-
             m_pNetType.Text = "";
             m_pPublicEndPoint.Text = "";
 
@@ -207,8 +204,6 @@ namespace Warcraft_II_Port_Test
             finally{
                 this.Cursor = Cursors.Default;
             }
-
-            GamePort = 0;
         }
 
         #endregion
