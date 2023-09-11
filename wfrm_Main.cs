@@ -29,6 +29,7 @@ namespace Warcraft_II_Port_Test
         private TextBox       m_pPublicEndPoint = null;
         private Button        m_pGet            = null;
         private Button        m_pClose          = null;
+        private int           GamePort          = 6112;
 
         /// <summary>
         /// Default constructor.
@@ -70,11 +71,20 @@ namespace Warcraft_II_Port_Test
             mt_LocalEndPoint.TextAlign = ContentAlignment.MiddleRight;
             mt_LocalEndPoint.Text = "Local end point:";
 
+            try
+            {
+                GamePort = (int)Registry.GetValue(
+                    "HKEY_CURRENT_USER\\SOFTWARE\\Battle.net\\Configuration",
+                    "Game Data Port",
+                    "6112");
+            }
+            catch { }
+
             m_pLocalEndPoint = new TextBox();
             m_pLocalEndPoint.Size = new Size(265,20);
             m_pLocalEndPoint.Location = new Point(105,35);
-            m_pLocalEndPoint.Text = new IPEndPoint(IPAddress.Any, 0).ToString();
-            m_pLocalEndPoint.ReadOnly = true;
+            m_pLocalEndPoint.Text = new IPEndPoint(IPAddress.Any, GamePort).ToString();
+            //m_pLocalEndPoint.ReadOnly = true;
 
             mt_NetType = new Label();
             mt_NetType.Size = new Size(100,20);
@@ -132,7 +142,9 @@ namespace Warcraft_II_Port_Test
 
         private void m_pGet_Click(object sender,EventArgs e)
         {
-            m_pLocalEndPoint.Text = new IPEndPoint(IPAddress.Any, 0).ToString();
+            if (GamePort == 0)
+                m_pLocalEndPoint.Text = new IPEndPoint(IPAddress.Any, 0).ToString();
+
             m_pNetType.Text = "";
             m_pPublicEndPoint.Text = "";
 
@@ -195,6 +207,8 @@ namespace Warcraft_II_Port_Test
             finally{
                 this.Cursor = Cursors.Default;
             }
+
+            GamePort = 0;
         }
 
         #endregion
