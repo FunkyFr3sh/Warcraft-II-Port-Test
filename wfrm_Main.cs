@@ -153,6 +153,9 @@ namespace Warcraft_II_Port_Test
                 }
                                 
                 using(Socket socket = new Socket(AddressFamily.InterNetwork,SocketType.Dgram,ProtocolType.Udp)){
+
+                    socket.ExclusiveAddressUse = true;
+
                     if(m_pLocalEndPoint.Text != string.Empty){
                         string[] ip_port = m_pLocalEndPoint.Text.Split(':');
                         socket.Bind(new IPEndPoint(IPAddress.Parse(ip_port[0]),Convert.ToInt32(ip_port[1])));
@@ -191,10 +194,13 @@ namespace Warcraft_II_Port_Test
                     m_pServer.SelectedIndex = 1;
                     m_pGet.PerformClick();
                 }
-                else
+                else //if (!(x is SocketException))
                 {
                     MessageBox.Show(
                         this, 
+                        "The port test failed. Please make sure you allowed the tool in your firewall " +
+                        "and you don't have the game running while testing yoru port. " + Environment.NewLine +
+                        Environment.NewLine +
                         "Error: " + x.ToString(), 
                         "Error:", 
                         MessageBoxButtons.OK, 
