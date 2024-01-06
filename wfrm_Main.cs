@@ -73,10 +73,10 @@ namespace Warcraft_II_Port_Test
 
             try
             {
-                GamePort = (int)Registry.GetValue(
-                    "HKEY_CURRENT_USER\\SOFTWARE\\Battle.net\\Configuration",
-                    "Game Data Port",
-                    "6112");
+                GamePort = Convert.ToInt32(Registry.GetValue(
+                        "HKEY_CURRENT_USER\\SOFTWARE\\Battle.net\\Configuration",
+                        "Game Data Port",
+                        "6112"));
             }
             catch { }
 
