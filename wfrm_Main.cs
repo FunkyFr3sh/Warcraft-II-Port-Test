@@ -30,6 +30,8 @@ namespace Warcraft_II_Port_Test
         private Button        m_pGet            = null;
         private Button        m_pClose          = null;
         private int           GamePort          = 6112;
+        private DateTime      m_LastTest        = new DateTime();
+
 
         /// <summary>
         /// Default constructor.
@@ -142,6 +144,18 @@ namespace Warcraft_II_Port_Test
 
         private void m_pGet_Click(object sender,EventArgs e)
         {
+            if (m_pPublicEndPoint.Text != "" && (DateTime.UtcNow - m_LastTest) < TimeSpan.FromMinutes(3))
+            {
+                MessageBox.Show(
+                    this, 
+                    "You must wait at least 3 minutes between each test.", 
+                    "Error:", 
+                    MessageBoxButtons.OK, 
+                    MessageBoxIcon.Error);
+
+                return;
+            }
+
             m_pNetType.Text = "";
             m_pPublicEndPoint.Text = "";
 
@@ -176,6 +190,8 @@ namespace Warcraft_II_Port_Test
                     if(result.NetType != STUN_NetType.UdpBlocked){
                         m_pPublicEndPoint.Text = 
                             string.Join(" - ", result.PublicEndPoints.Select(t => t.ToString()).ToArray());
+
+                        m_LastTest = DateTime.UtcNow;
                     }
                     else{
                         m_pPublicEndPoint.Text = "";
